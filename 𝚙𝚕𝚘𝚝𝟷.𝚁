@@ -1,0 +1,26 @@
+library(data.table)
+library(dplyr)
+
+
+# reading in the data
+elec_power_consumption_df <- fread('household_power_consumption.txt', na.strings = "?")
+str(elec_power_consumption_df)
+
+#subsetting the dataframe
+subset_elec_power_consumption_df <- elec_power_consumption_df[elec_power_consumption_df$Date %in% c('1/2/2007', '2/2/2007')]
+str(subset_elec_power_consumption_df)
+
+# column names to lower case
+names(subset_elec_power_consumption_df) <- tolower(names(subset_elec_power_consumption_df))
+
+# writing the subsetted dataframe to a file for the nwext graphs
+write.csv(subset_elec_power_consumption_df, file = 'subset_elec_power_consumption_df.csv', quote = TRUE, eol = "\n", na = "NA")
+
+# plotting the histgram (plot 1)
+hist(subset_elec_power_consumption_df$global_active_power, col = 'red', main = 'Global Active Power', xlab = 'Global Active Power (kilowatts)')
+
+# copying the plot to a file device
+dev.copy(png, file = 'plot1.png')
+dev.off()
+
+
